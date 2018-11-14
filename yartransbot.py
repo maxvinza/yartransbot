@@ -160,7 +160,7 @@ def stand_replace(url):
     htext = (htext.replace("getpeinfo.php?vt=", "/m"))
     htext = (htext.replace("None", ""))
     htext = (htext.replace("Прогноз прохождения", "\n\n"))
-    htext = (htext.replace("&npe;=", "num"))  # Прогноз прохождения
+    htext = (htext.replace("&npe=", "num"))  # Прогноз прохождения
     htext = (htext.replace(
         "К списку маршрутовнп - Низкопольное ТСпнп - Полунизкопольное ТСм/моб - Высокопольное ТС, оборудованное для перевозки маломобильных групп населениянул. - ТС следует в/из депо",
         ""))
