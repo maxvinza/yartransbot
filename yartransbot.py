@@ -8,6 +8,12 @@ from telegram import Bot
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
+from telegram.ext import BaseFilter
+
+
+class MyCommandFilter(BaseFilter):
+    def filter(self, message):
+        return message.text.startswith('/m')
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -236,10 +242,11 @@ def echo_all(bot: Bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=out_mess)
 
 
+my_command_filter = MyCommandFilter()
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 dispatcher.add_handler(CommandHandler('start', send_welcome))
-dispatcher.add_handler(MessageHandler(Filters.text, echo_all))
+dispatcher.add_handler(MessageHandler(Filters.text & my_command_filter, echo_all))
 updater.start_webhook(listen="0.0.0.0",
                       port=PORT,
                       url_path=TOKEN)
