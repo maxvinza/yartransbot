@@ -19,30 +19,6 @@ PORT = int(os.environ.get('PORT', '8443'))
 APP_NAME = 'yar-transport-tg-bot'
 
 
-def send_welcome(bot: Bot, update):
-    message = update.message.text
-    chat_id = update.message.chat_id
-    bot.send_message(chat_id=chat_id,
-                     text="Введите номер интересующего маршрута вида а23 или автобус23, тр1, тм1, мт96  ")
-
-
-def echo_all(bot: Bot, update):
-    input_mess = razbor_msg(update.message.text)
-    out_mess = pars(input_mess)
-    bot.send_message(chat_id=update.message.chat_id, text=out_mess)
-
-
-updater = Updater(token=TOKEN)
-dispatcher = updater.dispatcher
-dispatcher.add_handler(CommandHandler('start', send_welcome))
-dispatcher.add_handler(MessageHandler(Filters.text, echo_all))
-updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=TOKEN)
-updater.bot.set_webhook("https://{0}.herokuapp.com/{1}".format(APP_NAME, TOKEN))
-updater.idle()
-
-
 def razbor_msg(mess):
     mess = mess.lower()
     mess = (mess.replace(" ", ""))
@@ -245,3 +221,27 @@ def make_ts(tsh):
     soup = BeautifulSoup(tsh, 'html.parser')
     for link in soup.find_all('a'):
         return (link.get('href'))
+
+
+def send_welcome(bot: Bot, update):
+    message = update.message.text
+    chat_id = update.message.chat_id
+    bot.send_message(chat_id=chat_id,
+                     text="Введите номер интересующего маршрута вида а23 или автобус23, тр1, тм1, мт96  ")
+
+
+def echo_all(bot: Bot, update):
+    input_mess = razbor_msg(update.message.text)
+    out_mess = pars(input_mess)
+    bot.send_message(chat_id=update.message.chat_id, text=out_mess)
+
+
+updater = Updater(token=TOKEN)
+dispatcher = updater.dispatcher
+dispatcher.add_handler(CommandHandler('start', send_welcome))
+dispatcher.add_handler(MessageHandler(Filters.text, echo_all))
+updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=TOKEN)
+updater.bot.set_webhook("https://{0}.herokuapp.com/{1}".format(APP_NAME, TOKEN))
+updater.idle()
